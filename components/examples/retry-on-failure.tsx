@@ -1,33 +1,33 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { ExampleCard } from "@/components/example-card"
-import { RefreshCw, XCircle, CheckCircle, Clock } from "lucide-react"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { ExampleCard } from "@/components/example-card";
+import { RefreshCw, XCircle, CheckCircle, Clock } from "lucide-react";
 
 const code = `// Retry on Failure
 async function fetchWithRetry(url, maxRetries = 3) {
   let retries = 0;
-  
+
   while (retries < maxRetries) {
     try {
       console.log(\`Attempt \${retries + 1} of \${maxRetries}...\`);
-      
+
       // Attempt to fetch data
       const response = await fetch(url);
-      
+
       // If successful, return the data
       const data = await response.json();
       console.log("Success on attempt", retries + 1);
       return data;
     } catch (error) {
       retries++;
-      
+
       if (retries >= maxRetries) {
         console.error("Max retries reached. Giving up.");
         throw new Error(\`Failed after \${maxRetries} attempts: \${error.message}\`);
       }
-      
+
       // Wait longer between each retry (exponential backoff)
       const delay = 1000 * Math.pow(2, retries);
       console.log(\`Retrying in \${delay}ms...\`);
@@ -46,63 +46,74 @@ async function loadDataWithRetry() {
     console.error("All retries failed:", error);
     // Handle the failure after all retries
   }
-}`
+}`;
 
 export function RetryOnFailure() {
   const [attempts, setAttempts] = useState<
     Array<{
-      status: "pending" | "failed" | "success"
-      delay?: number
+      status: "pending" | "failed" | "success";
+      delay?: number;
     }>
-  >([])
-  const [currentAttempt, setCurrentAttempt] = useState(0)
-  const [isWaiting, setIsWaiting] = useState(false)
-  const [waitTime, setWaitTime] = useState(0)
-  const [success, setSuccess] = useState(false)
+  >([]);
+  const [currentAttempt, setCurrentAttempt] = useState(0);
+  const [isWaiting, setIsWaiting] = useState(false);
+  const [waitTime, setWaitTime] = useState(0);
+  const [success, setSuccess] = useState(false);
 
   const handleRun = async () => {
     // Reset state
-    setAttempts([])
-    setCurrentAttempt(0)
-    setIsWaiting(false)
-    setWaitTime(0)
-    setSuccess(false)
+    setAttempts([]);
+    setCurrentAttempt(0);
+    setIsWaiting(false);
+    setWaitTime(0);
+    setSuccess(false);
 
-    const maxRetries = 3
+    const maxRetries = 3;
 
     // First attempt - fails
-    setAttempts([{ status: "pending" }])
-    setCurrentAttempt(1)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    setAttempts([{ status: "failed" }])
+    setAttempts([{ status: "pending" }]);
+    setCurrentAttempt(1);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setAttempts([{ status: "failed" }]);
 
     // Wait with exponential backoff
-    setIsWaiting(true)
-    setWaitTime(2000)
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setIsWaiting(false)
+    setIsWaiting(true);
+    setWaitTime(2000);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setIsWaiting(false);
 
     // Second attempt - fails
-    setAttempts([{ status: "failed" }, { status: "pending" }])
-    setCurrentAttempt(2)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    setAttempts([{ status: "failed" }, { status: "failed" }])
+    setAttempts([{ status: "failed" }, { status: "pending" }]);
+    setCurrentAttempt(2);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setAttempts([{ status: "failed" }, { status: "failed" }]);
 
     // Wait with exponential backoff
-    setIsWaiting(true)
-    setWaitTime(4000)
-    await new Promise((resolve) => setTimeout(resolve, 2000)) // Shortened for demo
-    setIsWaiting(false)
+    setIsWaiting(true);
+    setWaitTime(4000);
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // Shortened for demo
+    setIsWaiting(false);
 
     // Third attempt - succeeds
-    setAttempts([{ status: "failed" }, { status: "failed" }, { status: "pending" }])
-    setCurrentAttempt(3)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    setAttempts([{ status: "failed" }, { status: "failed" }, { status: "success" }])
-    setSuccess(true)
+    setAttempts([
+      { status: "failed" },
+      { status: "failed" },
+      { status: "pending" },
+    ]);
+    setCurrentAttempt(3);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setAttempts([
+      { status: "failed" },
+      { status: "failed" },
+      { status: "success" },
+    ]);
+    setSuccess(true);
 
-    return { success: true, message: "Data retrieved successfully on attempt 3" }
-  }
+    return {
+      success: true,
+      message: "Data retrieved successfully on attempt 3",
+    };
+  };
 
   return (
     <ExampleCard
@@ -124,14 +135,20 @@ export function RetryOnFailure() {
                 attempt.status === "pending"
                   ? "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800"
                   : attempt.status === "failed"
-                    ? "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800"
-                    : "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800"
+                  ? "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800"
+                  : "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800"
               }`}
             >
               <div className="mt-0.5">
-                {attempt.status === "pending" && <RefreshCw className="h-5 w-5 text-blue-500 animate-spin" />}
-                {attempt.status === "failed" && <XCircle className="h-5 w-5 text-red-500" />}
-                {attempt.status === "success" && <CheckCircle className="h-5 w-5 text-green-500" />}
+                {attempt.status === "pending" && (
+                  <RefreshCw className="h-5 w-5 text-blue-500 animate-spin" />
+                )}
+                {attempt.status === "failed" && (
+                  <XCircle className="h-5 w-5 text-red-500" />
+                )}
+                {attempt.status === "success" && (
+                  <CheckCircle className="h-5 w-5 text-green-500" />
+                )}
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
@@ -140,8 +157,8 @@ export function RetryOnFailure() {
                     {attempt.status === "pending"
                       ? "(In Progress)"
                       : attempt.status === "failed"
-                        ? "(Failed)"
-                        : "(Success)"}
+                      ? "(Failed)"
+                      : "(Success)"}
                   </span>
                 </div>
 
@@ -171,7 +188,9 @@ export function RetryOnFailure() {
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Exponential Backoff</span>
+                  <span className="text-sm font-medium">
+                    Exponential Backoff
+                  </span>
                 </div>
                 <div className="mt-1 text-xs text-yellow-700 dark:text-yellow-300">
                   Waiting {waitTime}ms before retry {currentAttempt + 1}...
@@ -197,15 +216,18 @@ export function RetryOnFailure() {
           >
             <div className="flex items-center space-x-2 mb-2">
               <CheckCircle className="h-4 w-4 text-green-500" />
-              <span className="text-sm font-medium text-green-800 dark:text-green-200">Success after retries!</span>
+              <span className="text-sm font-medium text-green-800 dark:text-green-200">
+                Success after retries!
+              </span>
             </div>
             <div className="text-xs text-green-700 dark:text-green-300">
-              The retry mechanism with exponential backoff helps handle transient failures by automatically retrying
-              with increasing delays between attempts.
+              The retry mechanism with exponential backoff helps handle
+              transient failures by automatically retrying with increasing
+              delays between attempts.
             </div>
           </motion.div>
         )}
       </div>
     </ExampleCard>
-  )
+  );
 }

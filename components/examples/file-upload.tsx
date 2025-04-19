@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { ExampleCard } from "@/components/example-card"
-import { FileUp, CheckCircle, Upload } from "lucide-react"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { ExampleCard } from "@/components/example-card";
+import { FileUp, CheckCircle, Upload } from "lucide-react";
 
 const code = `// File Upload with Progress
 async function uploadFile(file) {
@@ -12,18 +12,18 @@ async function uploadFile(file) {
     let progress = 0;
     const totalSize = file.size;
     const chunkSize = totalSize / 10; // 10 chunks
-    
+
     const interval = setInterval(() => {
       progress += chunkSize;
-      
+
       // Calculate percentage
       const percentage = Math.min(
         Math.round((progress / totalSize) * 100),
         100
       );
-      
+
       console.log(\`Upload progress: \${percentage}%\`);
-      
+
       // When complete
       if (percentage >= 100) {
         clearInterval(interval);
@@ -43,35 +43,35 @@ async function handleFileUpload(file) {
     console.error("Upload failed:", error);
     throw error;
   }
-}`
+}`;
 
 export function FileUpload() {
-  const [progress, setProgress] = useState(0)
-  const [chunks, setChunks] = useState<number[]>([])
-  const [uploadComplete, setUploadComplete] = useState(false)
-  const [currentChunk, setCurrentChunk] = useState(-1)
+  const [progress, setProgress] = useState(0);
+  const [chunks, setChunks] = useState<number[]>([]);
+  const [uploadComplete, setUploadComplete] = useState(false);
+  const [currentChunk, setCurrentChunk] = useState(-1);
 
   const handleRun = async () => {
     // Reset state
-    setProgress(0)
-    setChunks([])
-    setUploadComplete(false)
-    setCurrentChunk(-1)
+    setProgress(0);
+    setChunks([]);
+    setUploadComplete(false);
+    setCurrentChunk(-1);
 
     // Create 10 chunks
-    const totalChunks = 10
-    setChunks(Array.from({ length: totalChunks }, (_, i) => i))
+    const totalChunks = 10;
+    setChunks(Array.from({ length: totalChunks }, (_, i) => i));
 
     // Upload each chunk with progress
     for (let i = 0; i < totalChunks; i++) {
-      setCurrentChunk(i)
-      await new Promise((resolve) => setTimeout(resolve, 300))
-      setProgress((prev) => Math.min(prev + 100 / totalChunks, 100))
+      setCurrentChunk(i);
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      setProgress((prev) => Math.min(prev + 100 / totalChunks, 100));
     }
 
-    setUploadComplete(true)
-    return { success: true, filename: "example.jpg" }
-  }
+    setUploadComplete(true);
+    return { success: true, filename: "example.jpg" };
+  };
 
   return (
     <ExampleCard
@@ -120,8 +120,12 @@ export function FileUpload() {
               >
                 <div className="flex flex-col items-center justify-center">
                   <span>Chunk {chunk + 1}</span>
-                  {index < currentChunk && <CheckCircle className="h-3 w-3 text-green-500 mt-1" />}
-                  {index === currentChunk && <Upload className="h-3 w-3 text-blue-500 mt-1" />}
+                  {index < currentChunk && (
+                    <CheckCircle className="h-3 w-3 text-green-500 mt-1" />
+                  )}
+                  {index === currentChunk && (
+                    <Upload className="h-3 w-3 text-blue-500 mt-1" />
+                  )}
                 </div>
               </motion.div>
             ))}
@@ -135,10 +139,12 @@ export function FileUpload() {
             className="flex items-center space-x-2 p-2 bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-md"
           >
             <CheckCircle className="h-4 w-4" />
-            <span className="text-sm">Upload complete! Server processed the file.</span>
+            <span className="text-sm">
+              Upload complete! Server processed the file.
+            </span>
           </motion.div>
         )}
       </div>
     </ExampleCard>
-  )
+  );
 }

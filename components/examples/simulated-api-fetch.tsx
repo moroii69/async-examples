@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { ExampleCard } from "@/components/example-card"
-import { Loader2, CheckCircle, Server, ArrowDown } from "lucide-react"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { ExampleCard } from "@/components/example-card";
+import { Loader2, CheckCircle, Server, ArrowDown } from "lucide-react";
 
 const code = `// Simulated API Fetch
 async function fetchUserData() {
   // Simulate API request delay
   await new Promise(resolve => setTimeout(resolve, 2000));
-  
+
   // Simulate API response
   const userData = {
     id: 1,
     name: "John Doe",
     email: "john@example.com"
   };
-  
+
   return userData;
 }
 
@@ -30,30 +30,34 @@ async function handleFetchUser() {
     console.error("Failed to fetch user:", error);
     throw error;
   }
-}`
+}`;
 
 export function SimulatedApiFetch() {
-  const [step, setStep] = useState(0)
-  const [userData, setUserData] = useState<null | { id: number; name: string; email: string }>(null)
+  const [step, setStep] = useState(0);
+  const [userData, setUserData] = useState<null | {
+    id: number;
+    name: string;
+    email: string;
+  }>(null);
 
   const handleRun = async () => {
     // Reset state
-    setStep(0)
-    setUserData(null)
+    setStep(0);
+    setUserData(null);
 
     // Step 1: Sending request
-    setStep(1)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    setStep(1);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Step 2: Waiting for response
-    setStep(2)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    setStep(2);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Step 3: Received response
-    const data = { id: 1, name: "John Doe", email: "john@example.com" }
-    setUserData(data)
-    setStep(3)
-  }
+    const data = { id: 1, name: "John Doe", email: "john@example.com" };
+    setUserData(data);
+    setStep(3);
+  };
 
   return (
     <ExampleCard
@@ -84,7 +88,11 @@ export function SimulatedApiFetch() {
             }}
             transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1 }}
           >
-            <ArrowDown className={`h-5 w-5 ${step >= 1 && step < 3 ? "text-blue-500" : "text-zinc-300"}`} />
+            <ArrowDown
+              className={`h-5 w-5 ${
+                step >= 1 && step < 3 ? "text-blue-500" : "text-zinc-300"
+              }`}
+            />
           </motion.div>
 
           <div className="flex items-center space-x-2">
@@ -111,7 +119,9 @@ export function SimulatedApiFetch() {
           >
             <div className="flex items-center space-x-2">
               <motion.div animate={{ opacity: step >= 1 ? 1 : 0.3 }}>
-                {step === 1 && <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />}
+                {step === 1 && (
+                  <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
+                )}
                 {step > 1 && <CheckCircle className="h-4 w-4 text-green-500" />}
               </motion.div>
               <span>Sending request to API...</span>
@@ -127,7 +137,9 @@ export function SimulatedApiFetch() {
           >
             <div className="flex items-center space-x-2">
               <motion.div animate={{ opacity: step >= 2 ? 1 : 0.3 }}>
-                {step === 2 && <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />}
+                {step === 2 && (
+                  <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
+                )}
                 {step > 2 && <CheckCircle className="h-4 w-4 text-green-500" />}
               </motion.div>
               <span>Server processing request...</span>
@@ -143,7 +155,9 @@ export function SimulatedApiFetch() {
           >
             <div className="flex items-center space-x-2">
               <motion.div animate={{ opacity: step >= 3 ? 1 : 0.3 }}>
-                {step === 3 && <CheckCircle className="h-4 w-4 text-green-500" />}
+                {step === 3 && (
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                )}
               </motion.div>
               <span>Received response from server</span>
             </div>
@@ -164,5 +178,5 @@ export function SimulatedApiFetch() {
         )}
       </div>
     </ExampleCard>
-  )
+  );
 }

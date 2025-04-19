@@ -1,9 +1,16 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { ExampleCard } from "@/components/example-card"
-import { User, FileText, Users, ArrowDown, Loader2, CheckCircle } from "lucide-react"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { ExampleCard } from "@/components/example-card";
+import {
+  User,
+  FileText,
+  Users,
+  ArrowDown,
+  Loader2,
+  CheckCircle,
+} from "lucide-react";
 
 const code = `// Sequential Async Calls
 async function fetchUserProfile(userId) {
@@ -49,54 +56,54 @@ async function loadUserProfile() {
     console.error("Failed to load profile:", error);
     throw error;
   }
-}`
+}`;
 
 export function SequentialCalls() {
-  const [currentStep, setCurrentStep] = useState(0)
-  const [userData, setUserData] = useState<any>(null)
-  const [postsData, setPostsData] = useState<any>(null)
-  const [followersData, setFollowersData] = useState<any>(null)
+  const [currentStep, setCurrentStep] = useState(0);
+  const [userData, setUserData] = useState<any>(null);
+  const [postsData, setPostsData] = useState<any>(null);
+  const [followersData, setFollowersData] = useState<any>(null);
 
   const handleRun = async () => {
     // Reset state
-    setCurrentStep(0)
-    setUserData(null)
-    setPostsData(null)
-    setFollowersData(null)
+    setCurrentStep(0);
+    setUserData(null);
+    setPostsData(null);
+    setFollowersData(null);
 
     // Step 1: Fetch user data
-    setCurrentStep(1)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    const user = { id: 123, name: "Jane Smith" }
-    setUserData(user)
+    setCurrentStep(1);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const user = { id: 123, name: "Jane Smith" };
+    setUserData(user);
 
     // Step 2: Fetch posts
-    setCurrentStep(2)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    setCurrentStep(2);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     const posts = [
       { id: 1, title: "First Post" },
       { id: 2, title: "Second Post" },
-    ]
-    setPostsData(posts)
+    ];
+    setPostsData(posts);
 
     // Step 3: Fetch followers
-    setCurrentStep(3)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    setCurrentStep(3);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     const followers = [
       { id: 101, name: "Alice" },
       { id: 102, name: "Bob" },
-    ]
-    setFollowersData(followers)
+    ];
+    setFollowersData(followers);
 
     // Step 4: Complete
-    setCurrentStep(4)
+    setCurrentStep(4);
 
     return {
       user,
       posts,
       followers,
-    }
-  }
+    };
+  };
 
   return (
     <ExampleCard
@@ -123,14 +130,24 @@ export function SequentialCalls() {
               }}
             >
               <div className="mt-0.5">
-                <User className={`h-5 w-5 ${currentStep >= 1 ? "text-blue-500" : "text-zinc-400"}`} />
+                <User
+                  className={`h-5 w-5 ${
+                    currentStep >= 1 ? "text-blue-500" : "text-zinc-400"
+                  }`}
+                />
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">1. Fetch User Data</span>
+                  <span className="text-sm font-medium">
+                    1. Fetch User Data
+                  </span>
                   <div>
-                    {currentStep === 1 && <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />}
-                    {currentStep > 1 && <CheckCircle className="h-4 w-4 text-green-500" />}
+                    {currentStep === 1 && (
+                      <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
+                    )}
+                    {currentStep > 1 && (
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                    )}
                   </div>
                 </div>
 
@@ -140,14 +157,19 @@ export function SequentialCalls() {
                     animate={{ opacity: 1, height: "auto" }}
                     className="mt-2 text-xs bg-white dark:bg-zinc-900 p-2 rounded border border-zinc-200 dark:border-zinc-800"
                   >
-                    <pre className="overflow-auto">{JSON.stringify(userData, null, 2)}</pre>
+                    <pre className="overflow-auto">
+                      {JSON.stringify(userData, null, 2)}
+                    </pre>
                   </motion.div>
                 )}
               </div>
             </motion.div>
 
             {/* Arrow */}
-            <motion.div className="flex justify-center" animate={{ opacity: currentStep >= 2 ? 1 : 0.3 }}>
+            <motion.div
+              className="flex justify-center"
+              animate={{ opacity: currentStep >= 2 ? 1 : 0.3 }}
+            >
               <ArrowDown className="h-5 w-5 text-zinc-400" />
             </motion.div>
 
@@ -164,14 +186,24 @@ export function SequentialCalls() {
               }}
             >
               <div className="mt-0.5">
-                <FileText className={`h-5 w-5 ${currentStep >= 2 ? "text-blue-500" : "text-zinc-400"}`} />
+                <FileText
+                  className={`h-5 w-5 ${
+                    currentStep >= 2 ? "text-blue-500" : "text-zinc-400"
+                  }`}
+                />
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">2. Fetch User's Posts</span>
+                  <span className="text-sm font-medium">
+                    2. Fetch User's Posts
+                  </span>
                   <div>
-                    {currentStep === 2 && <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />}
-                    {currentStep > 2 && <CheckCircle className="h-4 w-4 text-green-500" />}
+                    {currentStep === 2 && (
+                      <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
+                    )}
+                    {currentStep > 2 && (
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                    )}
                   </div>
                 </div>
 
@@ -181,14 +213,19 @@ export function SequentialCalls() {
                     animate={{ opacity: 1, height: "auto" }}
                     className="mt-2 text-xs bg-white dark:bg-zinc-900 p-2 rounded border border-zinc-200 dark:border-zinc-800"
                   >
-                    <pre className="overflow-auto">{JSON.stringify(postsData, null, 2)}</pre>
+                    <pre className="overflow-auto">
+                      {JSON.stringify(postsData, null, 2)}
+                    </pre>
                   </motion.div>
                 )}
               </div>
             </motion.div>
 
             {/* Arrow */}
-            <motion.div className="flex justify-center" animate={{ opacity: currentStep >= 3 ? 1 : 0.3 }}>
+            <motion.div
+              className="flex justify-center"
+              animate={{ opacity: currentStep >= 3 ? 1 : 0.3 }}
+            >
               <ArrowDown className="h-5 w-5 text-zinc-400" />
             </motion.div>
 
@@ -205,14 +242,24 @@ export function SequentialCalls() {
               }}
             >
               <div className="mt-0.5">
-                <Users className={`h-5 w-5 ${currentStep >= 3 ? "text-blue-500" : "text-zinc-400"}`} />
+                <Users
+                  className={`h-5 w-5 ${
+                    currentStep >= 3 ? "text-blue-500" : "text-zinc-400"
+                  }`}
+                />
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">3. Fetch User's Followers</span>
+                  <span className="text-sm font-medium">
+                    3. Fetch User's Followers
+                  </span>
                   <div>
-                    {currentStep === 3 && <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />}
-                    {currentStep > 3 && <CheckCircle className="h-4 w-4 text-green-500" />}
+                    {currentStep === 3 && (
+                      <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
+                    )}
+                    {currentStep > 3 && (
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                    )}
                   </div>
                 </div>
 
@@ -222,7 +269,9 @@ export function SequentialCalls() {
                     animate={{ opacity: 1, height: "auto" }}
                     className="mt-2 text-xs bg-white dark:bg-zinc-900 p-2 rounded border border-zinc-200 dark:border-zinc-800"
                   >
-                    <pre className="overflow-auto">{JSON.stringify(followersData, null, 2)}</pre>
+                    <pre className="overflow-auto">
+                      {JSON.stringify(followersData, null, 2)}
+                    </pre>
                   </motion.div>
                 )}
               </div>
@@ -243,11 +292,12 @@ export function SequentialCalls() {
               </span>
             </div>
             <div className="text-xs text-green-700 dark:text-green-300">
-              Notice how each request waited for the previous one to complete before starting.
+              Notice how each request waited for the previous one to complete
+              before starting.
             </div>
           </motion.div>
         )}
       </div>
     </ExampleCard>
-  )
+  );
 }

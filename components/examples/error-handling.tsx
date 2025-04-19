@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { ExampleCard } from "@/components/example-card"
-import { AlertTriangle, XCircle, Loader2 } from "lucide-react"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { ExampleCard } from "@/components/example-card";
+import { AlertTriangle, XCircle, Loader2 } from "lucide-react";
 
 const code = `// Error Handling with try/catch
 async function fetchDataWithErrorHandling(url) {
@@ -61,42 +61,44 @@ async function handleDataFetch() {
     // Show user-friendly message
     alert("Sorry, something went wrong. Please try again later.");
   }
-}`
+}`;
 
 export function ErrorHandling() {
-  const [step, setStep] = useState(0)
-  const [error, setError] = useState<null | { name: string; message: string }>(null)
-  const [showTryCatch, setShowTryCatch] = useState(false)
+  const [step, setStep] = useState(0);
+  const [error, setError] = useState<null | { name: string; message: string }>(
+    null
+  );
+  const [showTryCatch, setShowTryCatch] = useState(false);
 
   const handleRun = async () => {
     // Reset state
-    setStep(0)
-    setError(null)
-    setShowTryCatch(true)
+    setStep(0);
+    setError(null);
+    setShowTryCatch(true);
 
     // Step 1: Enter try block
-    setStep(1)
-    await new Promise((resolve) => setTimeout(resolve, 800))
+    setStep(1);
+    await new Promise((resolve) => setTimeout(resolve, 800));
 
     // Step 2: Attempting API call
-    setStep(2)
-    await new Promise((resolve) => setTimeout(resolve, 800))
+    setStep(2);
+    await new Promise((resolve) => setTimeout(resolve, 800));
 
     // Step 3: Error occurs
-    setStep(3)
-    await new Promise((resolve) => setTimeout(resolve, 800))
+    setStep(3);
+    await new Promise((resolve) => setTimeout(resolve, 800));
 
     // Step 4: Catch block handles error
-    setStep(4)
-    setError({ name: "NetworkError", message: "Failed to fetch data" })
-    await new Promise((resolve) => setTimeout(resolve, 800))
+    setStep(4);
+    setError({ name: "NetworkError", message: "Failed to fetch data" });
+    await new Promise((resolve) => setTimeout(resolve, 800));
 
     // Step 5: Finally block executes
-    setStep(5)
+    setStep(5);
 
     // Throw the error for the ExampleCard to catch
-    throw new Error("NetworkError: Failed to fetch data")
-  }
+    throw new Error("NetworkError: Failed to fetch data");
+  };
 
   return (
     <ExampleCard
@@ -150,8 +152,12 @@ export function ErrorHandling() {
                   >
                     <div className="flex items-center space-x-2">
                       <span>const data = await simulateApiCall(url);</span>
-                      {step === 2 && <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />}
-                      {step === 3 && <XCircle className="h-4 w-4 text-red-500" />}
+                      {step === 2 && (
+                        <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
+                      )}
+                      {step === 3 && (
+                        <XCircle className="h-4 w-4 text-red-500" />
+                      )}
                     </div>
                   </motion.div>
 
@@ -165,7 +171,9 @@ export function ErrorHandling() {
                     className="p-2 rounded-md border text-sm"
                   >
                     <div className="flex items-center space-x-2">
-                      <span>console.log("Data fetched successfully:", data);</span>
+                      <span>
+                        console.log("Data fetched successfully:", data);
+                      </span>
                     </div>
                   </motion.div>
                 </div>
@@ -184,7 +192,11 @@ export function ErrorHandling() {
                 >
                   <div className="flex flex-col items-center">
                     <AlertTriangle className="h-6 w-6 text-red-500" />
-                    <motion.div initial={{ height: 0 }} animate={{ height: 40 }} className="w-0.5 bg-red-500 my-1" />
+                    <motion.div
+                      initial={{ height: 0 }}
+                      animate={{ height: 40 }}
+                      className="w-0.5 bg-red-500 my-1"
+                    />
                   </div>
                 </motion.div>
               )}
@@ -202,15 +214,26 @@ export function ErrorHandling() {
                 }}
               >
                 <div className="flex items-center space-x-2 mb-2">
-                  <span className="text-sm font-medium">catch (error) {`{`}</span>
+                  <span className="text-sm font-medium">
+                    catch (error) {`{`}
+                  </span>
                 </div>
 
                 <div className="ml-4 space-y-2">
                   <motion.div
                     animate={{
-                      backgroundColor: step >= 4 && error?.name === "NetworkError" ? "#fee2e2" : "#f3f4f6",
-                      borderColor: step >= 4 && error?.name === "NetworkError" ? "#fca5a5" : "#e5e7eb",
-                      color: step >= 4 && error?.name === "NetworkError" ? "#b91c1c" : "#6b7280",
+                      backgroundColor:
+                        step >= 4 && error?.name === "NetworkError"
+                          ? "#fee2e2"
+                          : "#f3f4f6",
+                      borderColor:
+                        step >= 4 && error?.name === "NetworkError"
+                          ? "#fca5a5"
+                          : "#e5e7eb",
+                      color:
+                        step >= 4 && error?.name === "NetworkError"
+                          ? "#b91c1c"
+                          : "#6b7280",
                     }}
                     className="p-2 rounded-md border text-sm"
                   >
@@ -251,7 +274,9 @@ export function ErrorHandling() {
                     className="p-2 rounded-md border text-sm"
                   >
                     <div className="flex items-center space-x-2">
-                      <span>throw error; // Rethrow to let caller handle it</span>
+                      <span>
+                        throw error; // Rethrow to let caller handle it
+                      </span>
                     </div>
                   </motion.div>
                 </div>
@@ -306,13 +331,18 @@ export function ErrorHandling() {
               >
                 <div className="flex items-center space-x-2 mb-2">
                   <XCircle className="h-4 w-4 text-red-500" />
-                  <span className="text-sm font-medium text-red-800 dark:text-red-200">Error Caught:</span>
+                  <span className="text-sm font-medium text-red-800 dark:text-red-200">
+                    Error Caught:
+                  </span>
                 </div>
                 <div className="text-xs bg-white dark:bg-zinc-800 p-2 rounded border border-zinc-200 dark:border-zinc-700">
-                  <pre className="overflow-auto">{JSON.stringify(error, null, 2)}</pre>
+                  <pre className="overflow-auto">
+                    {JSON.stringify(error, null, 2)}
+                  </pre>
                 </div>
                 <div className="mt-2 text-xs text-red-700 dark:text-red-300">
-                  The try/catch pattern allows you to gracefully handle errors without crashing your application.
+                  The try/catch pattern allows you to gracefully handle errors
+                  without crashing your application.
                 </div>
               </motion.div>
             )}
@@ -320,5 +350,5 @@ export function ErrorHandling() {
         )}
       </div>
     </ExampleCard>
-  )
+  );
 }

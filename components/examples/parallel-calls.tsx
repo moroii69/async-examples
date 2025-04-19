@@ -8,19 +8,19 @@ import { User, FileText, Bell, Loader2, CheckCircle } from "lucide-react"
 const code = `// Parallel Async Calls (Promise.all)
 async function fetchDashboardData(userId) {
   console.log("Fetching dashboard data in parallel...");
-  
+
   // Define all promises but don't await yet
   const userPromise = fetchUser(userId);
   const postsPromise = fetchPosts(userId);
   const notificationsPromise = fetchNotifications(userId);
-  
+
   // Wait for all promises to resolve in parallel
   const [user, posts, notifications] = await Promise.all([
     userPromise,
     postsPromise,
     notificationsPromise
   ]);
-  
+
   return { user, posts, notifications };
 }
 

@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { ExampleCard } from "@/components/example-card"
-import { Server, Loader2, CheckCircle, Trophy } from "lucide-react"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { ExampleCard } from "@/components/example-card";
+import { Server, Loader2, CheckCircle, Trophy } from "lucide-react";
 
 const code = `// Race Between Tasks (Promise.race)
 async function fetchWithFallback(primaryUrl, fallbackUrl) {
@@ -54,86 +54,86 @@ async function loadDataFromFastestSource() {
     console.error("All sources failed:", error);
     throw error;
   }
-}`
+}`;
 
 export function RaceBetweenTasks() {
-  const [isRunning, setIsRunning] = useState(false)
-  const [primaryProgress, setPrimaryProgress] = useState(0)
-  const [fallbackProgress, setFallbackProgress] = useState(0)
-  const [winner, setWinner] = useState<"primary" | "fallback" | null>(null)
-  const [result, setResult] = useState<any>(null)
+  const [isRunning, setIsRunning] = useState(false);
+  const [primaryProgress, setPrimaryProgress] = useState(0);
+  const [fallbackProgress, setFallbackProgress] = useState(0);
+  const [winner, setWinner] = useState<"primary" | "fallback" | null>(null);
+  const [result, setResult] = useState<any>(null);
 
   const handleRun = async () => {
     // Reset state
-    setIsRunning(true)
-    setPrimaryProgress(0)
-    setFallbackProgress(0)
-    setWinner(null)
-    setResult(null)
+    setIsRunning(true);
+    setPrimaryProgress(0);
+    setFallbackProgress(0);
+    setWinner(null);
+    setResult(null);
 
     // Create a flag to track which one wins
-    let raceWon = false
+    let raceWon = false;
 
     // Primary server - slower (3s)
     const primaryPromise = new Promise((resolve) => {
-      const startTime = Date.now()
+      const startTime = Date.now();
       const interval = setInterval(() => {
-        const elapsed = Date.now() - startTime
-        const progress = Math.min((elapsed / 3000) * 100, 100)
-        setPrimaryProgress(progress)
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min((elapsed / 3000) * 100, 100);
+        setPrimaryProgress(progress);
 
         if (progress >= 100) {
-          clearInterval(interval)
+          clearInterval(interval);
           const result = {
             source: "PRIMARY",
             data: { message: "Data loaded successfully" },
             responseTime: 3000,
-          }
+          };
 
           if (!raceWon) {
-            raceWon = true
-            setWinner("primary")
-            setResult(result)
+            raceWon = true;
+            setWinner("primary");
+            setResult(result);
           }
 
-          resolve(result)
+          resolve(result);
         }
-      }, 50)
-    })
+      }, 50);
+    });
 
     // Fallback server - faster (1.5s)
     const fallbackPromise = new Promise((resolve) => {
-      const startTime = Date.now()
+      const startTime = Date.now();
       const interval = setInterval(() => {
-        const elapsed = Date.now() - startTime
-        const progress = Math.min((elapsed / 1500) * 100, 100)
-        setFallbackProgress(progress)
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min((elapsed / 1500) * 100, 100);
+        setFallbackProgress(progress);
 
         if (progress >= 100) {
-          clearInterval(interval)
+          clearInterval(interval);
           const result = {
             source: "FALLBACK",
             data: { message: "Data loaded successfully" },
             responseTime: 1500,
-          }
+          };
 
           if (!raceWon) {
-            raceWon = true
-            setWinner("fallback")
-            setResult(result)
+            raceWon = true;
+            setWinner("fallback");
+            setResult(result);
           }
 
-          resolve(result)
+          resolve(result);
         }
-      }, 50)
-    })
+      }, 50);
+    });
 
     // Race the promises
-    await Promise.race([primaryPromise, fallbackPromise])
-    setIsRunning(false)
+    await Promise.race([primaryPromise, fallbackPromise]);
+    setIsRunning(false);
 
-    return result
-  }
+    return result;
+  };
 
   return (
     <ExampleCard
@@ -156,20 +156,32 @@ export function RaceBetweenTasks() {
           >
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center space-x-2">
-                <Server className={`h-5 w-5 ${winner === "primary" ? "text-green-500" : "text-blue-500"}`} />
+                <Server
+                  className={`h-5 w-5 ${
+                    winner === "primary" ? "text-green-500" : "text-blue-500"
+                  }`}
+                />
                 <span className="text-sm font-medium">Primary Server (3s)</span>
               </div>
               <div>
-                {primaryProgress < 100 && isRunning && <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />}
-                {primaryProgress === 100 && <CheckCircle className="h-4 w-4 text-green-500" />}
-                {winner === "primary" && <Trophy className="h-4 w-4 text-yellow-500 ml-2" />}
+                {primaryProgress < 100 && isRunning && (
+                  <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
+                )}
+                {primaryProgress === 100 && (
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                )}
+                {winner === "primary" && (
+                  <Trophy className="h-4 w-4 text-yellow-500 ml-2" />
+                )}
               </div>
             </div>
 
             <div className="space-y-2">
               <div className="relative h-2 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
                 <motion.div
-                  className={`absolute top-0 left-0 h-full ${winner === "primary" ? "bg-green-500" : "bg-blue-500"}`}
+                  className={`absolute top-0 left-0 h-full ${
+                    winner === "primary" ? "bg-green-500" : "bg-blue-500"
+                  }`}
                   initial={{ width: 0 }}
                   animate={{ width: `${primaryProgress}%` }}
                   transition={{ ease: "linear" }}
@@ -193,20 +205,34 @@ export function RaceBetweenTasks() {
           >
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center space-x-2">
-                <Server className={`h-5 w-5 ${winner === "fallback" ? "text-green-500" : "text-purple-500"}`} />
-                <span className="text-sm font-medium">Fallback Server (1.5s)</span>
+                <Server
+                  className={`h-5 w-5 ${
+                    winner === "fallback" ? "text-green-500" : "text-purple-500"
+                  }`}
+                />
+                <span className="text-sm font-medium">
+                  Fallback Server (1.5s)
+                </span>
               </div>
               <div className="flex items-center">
-                {fallbackProgress < 100 && isRunning && <Loader2 className="h-4 w-4 text-purple-500 animate-spin" />}
-                {fallbackProgress === 100 && <CheckCircle className="h-4 w-4 text-green-500" />}
-                {winner === "fallback" && <Trophy className="h-4 w-4 text-yellow-500 ml-2" />}
+                {fallbackProgress < 100 && isRunning && (
+                  <Loader2 className="h-4 w-4 text-purple-500 animate-spin" />
+                )}
+                {fallbackProgress === 100 && (
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                )}
+                {winner === "fallback" && (
+                  <Trophy className="h-4 w-4 text-yellow-500 ml-2" />
+                )}
               </div>
             </div>
 
             <div className="space-y-2">
               <div className="relative h-2 bg-zinc-200 dark:bg-zinc-700 rounded-full overflow-hidden">
                 <motion.div
-                  className={`absolute top-0 left-0 h-full ${winner === "fallback" ? "bg-green-500" : "bg-purple-500"}`}
+                  className={`absolute top-0 left-0 h-full ${
+                    winner === "fallback" ? "bg-green-500" : "bg-purple-500"
+                  }`}
                   initial={{ width: 0 }}
                   animate={{ width: `${fallbackProgress}%` }}
                   transition={{ ease: "linear" }}
@@ -230,18 +256,22 @@ export function RaceBetweenTasks() {
             <div className="flex items-center space-x-2 mb-2">
               <Trophy className="h-4 w-4 text-yellow-500" />
               <span className="text-sm font-medium text-green-800 dark:text-green-200">
-                {winner === "primary" ? "Primary" : "Fallback"} server won the race!
+                {winner === "primary" ? "Primary" : "Fallback"} server won the
+                race!
               </span>
             </div>
             <div className="text-xs bg-white dark:bg-zinc-800 p-2 rounded border border-zinc-200 dark:border-zinc-700">
-              <pre className="overflow-auto">{JSON.stringify(result, null, 2)}</pre>
+              <pre className="overflow-auto">
+                {JSON.stringify(result, null, 2)}
+              </pre>
             </div>
             <div className="mt-2 text-xs text-green-700 dark:text-green-300">
-              Promise.race returns the result from whichever promise resolves first, regardless of the others.
+              Promise.race returns the result from whichever promise resolves
+              first, regardless of the others.
             </div>
           </motion.div>
         )}
       </div>
     </ExampleCard>
-  )
+  );
 }
