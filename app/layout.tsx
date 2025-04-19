@@ -5,8 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 
 export const metadata = {
   title: "Async/Await Examples",
-  description: "12 real-world examples of async/await patterns",
-    generator: 'v0.dev'
+  description: "12 real-world examples of async/await patterns"
 }
 
 export default function RootLayout({
